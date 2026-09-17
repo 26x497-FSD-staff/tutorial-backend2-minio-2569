@@ -18,6 +18,8 @@ import { dbClient } from "@db/client.js";
 import { fileTable } from "@db/schema.js";
 import { eq } from "drizzle-orm";
 
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -64,6 +66,9 @@ const upload = multer({
 router.get(
   "/view/:filename",
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+
+    await delay(800);
+
     try {
       const filename = req.params.filename as string;
 
@@ -86,8 +91,11 @@ router.get(
 
 
 // GET /v2/file?prefix=xxx&suffix=yyy - Endpoint to list files
-router.get("/", (req: Request, res: Response, next: NextFunction): void => {
+router.get("/", async (req: Request, res: Response, next: NextFunction) => {
   try {
+
+    await delay(900);
+
     // Optional: filter by virtual folder path (e.g., /list?prefix=avatars/)
     const prefix = (req.query.prefix as string) || ""; // folder in a bucket
     const suffix = (req.query.suffix as string) || ""; // e.g., "png" or "pdf"

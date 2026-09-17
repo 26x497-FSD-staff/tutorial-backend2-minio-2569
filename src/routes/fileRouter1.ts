@@ -14,6 +14,7 @@ import { dbClient } from "@db/client.js";
 import { fileTable } from "@db/schema.js";
 import { eq } from "drizzle-orm";
 
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 const router = Router();
 
@@ -58,7 +59,10 @@ const upload = multer({ storage, fileFilter });
 router.use("/view", express.static(uploadDir));
 
 // GET /file - Endpoint to list all files
-router.get("/", (req: Request, res: Response): void => {
+router.get("/", async (req: Request, res: Response): void => {
+
+  await delay(750);
+
   fs.readdir(uploadDir, (err, files) => {
     if (err) {
       res.status(500).json({ error: "Unable to scan directory structure" });
