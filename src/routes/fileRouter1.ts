@@ -60,7 +60,7 @@ router.use("/view", express.static(uploadDir));
 
 // GET /file - Endpoint to list all files
 router.get("/", async (req: Request, res: Response): void => {
-
+  // add async delay
   await delay(750);
 
   fs.readdir(uploadDir, (err, files) => {

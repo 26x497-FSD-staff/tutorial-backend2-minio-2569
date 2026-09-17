@@ -66,10 +66,10 @@ const upload = multer({
 router.get(
   "/view/:filename",
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-
-    await delay(800);
-
     try {
+      // add async delay
+      await delay(800);
+
       const filename = req.params.filename as string;
 
       // Fetch object metadata to get the original content type
@@ -93,7 +93,7 @@ router.get(
 // GET /v2/file?prefix=xxx&suffix=yyy - Endpoint to list files
 router.get("/", async (req: Request, res: Response, next: NextFunction) => {
   try {
-
+    // add async delay
     await delay(900);
 
     // Optional: filter by virtual folder path (e.g., /list?prefix=avatars/)

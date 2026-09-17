@@ -240,6 +240,9 @@ import { dbClient } from "@db/client.js";
 import { fileTable } from "@db/schema.js";
 import { eq } from "drizzle-orm";
 
+// simulate (async) delay function
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
 // POST /file/upload - Endpoint to handle file upload
 router.post(
   "/upload",
@@ -321,6 +324,9 @@ This endpoint return a list of all uploaded files stored in the `uploads` folder
 ```typescript
 // GET /file - Endpoint to list all files
 router.get("/", (req: Request, res: Response): void => {
+
+  await delay(750);
+
   fs.readdir(uploadDir, (err, files) => {
     if (err) {
       res.status(500).json({ error: "Unable to scan directory structure" });
@@ -676,6 +682,9 @@ import { dbClient } from "@db/client.js";
 import { fileTable } from "@db/schema.js";
 import { eq } from "drizzle-orm";
 
+// simulate (async) delay function
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -844,8 +853,11 @@ This endpoint provide access to an uploaded file stored in `MinIO`.
 // GET /v2/file/view/:filename - Endpoint to access file (Streams object safely from storage)
 router.get(
   "/view/:filename",
-  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {    
     try {
+      // add async delay
+      await delay(800);
+
       const filename = req.params.filename as string;
 
       // Fetch object metadata to get the original content type
@@ -874,8 +886,11 @@ This endpoint return a list of uploaded files identified by query parameters `pr
 
 ```typescript
 // GET /v2/file?prefix=xxx&suffix=yyy - Endpoint to list files
-router.get("/", (req: Request, res: Response, next: NextFunction): void => {
+router.get("/", async (req: Request, res: Response, next: NextFunction): void => {
   try {
+    // add async delay
+    await delay(800);
+
     // Optional: filter by virtual folder path (e.g., /list?prefix=avatars/)
     const prefix = (req.query.prefix as string) || ""; // folder in a bucket
     const suffix = (req.query.suffix as string) || ""; // e.g., "png" or "pdf"
