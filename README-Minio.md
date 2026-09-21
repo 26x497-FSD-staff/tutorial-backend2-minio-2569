@@ -1,7 +1,7 @@
 # File Storage Tutorial
 
 This is a `File Storage Tutorial` for the `Backend Architecture` module.
-We will continue from the []() project.
+We will continue from the [Backend Database Design Tutorial](https://github.com/26x497-FSD-staff/tutorial-backend1-db-2569) project.
 
 ---
 
@@ -16,7 +16,7 @@ We will continue from the []() project.
 
 ## Project Setup
 
-Clone the []() project.
+Clone the [Backend Database Design Tutorial](https://github.com/26x497-FSD-staff/tutorial-backend1-db-2569) project.
 
 ```bash
 pnpm install
