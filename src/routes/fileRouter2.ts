@@ -89,6 +89,34 @@ router.get(
   },
 );
 
+// GET /v2/file/view2/:filename - reponse with minio presignedURL with time limit access
+router.get('/view2/:filename', async (req: Request, res: Response, next: NextFunction) => {
+  // add async delay
+    const filename = req.params.filename as string;
+
+  try {
+    const stat = await minioClient.statObject(BUCKET_NAME, filename);
+    
+    // Generate a presigned URL valid for 1 hour
+    const presignedUrl = await minioClient.presignedGetObject(BUCKET_NAME, filename, 3600);
+
+    const result = {
+      stat,
+      presignedUrl,
+    };
+
+    return res.status(200).json({
+      source: 'minio-server',
+      data: result,
+    });
+
+  } catch (error: any) {
+    console.error('Error processing request:', error);
+
+    return res.status(500).json({ error: error.message || 'Internal Server Error' });
+  }
+});
+
 
 // GET /v2/file?prefix=xxx&suffix=yyy - Endpoint to list files
 router.get("/", async (req: Request, res: Response, next: NextFunction) => {
